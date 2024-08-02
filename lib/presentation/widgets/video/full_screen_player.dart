@@ -18,6 +18,7 @@ class FullScreenPlayer extends StatefulWidget {
 
 class _FullScreenPlayerState extends State<FullScreenPlayer> {
   late VideoPlayerController controller;
+  final ValueNotifier<bool> isPausedNotifier = ValueNotifier(false);
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
   @override
   void dispose() {
     controller.dispose();
+    isPausedNotifier.dispose();
     super.dispose();
   }
 
@@ -51,9 +53,11 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
           onTap: () {
             if (controller.value.isPlaying) {
               controller.pause();
-              return;
+              isPausedNotifier.value = true;
+            } else {
+              controller.play();
+              isPausedNotifier.value = false;
             }
-            controller.play();
           },
           child: AspectRatio(
             aspectRatio: controller.value.aspectRatio,
@@ -67,7 +71,23 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                   child: _VideoCaption(
                     caption: widget.caption,
                   ),
-                )
+                ),
+                ValueListenableBuilder<bool>(
+                  valueListenable: isPausedNotifier,
+                  builder: (context, isPaused, child) {
+                    return Center(
+                      child: AnimatedOpacity(
+                        opacity: isPaused ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 100),
+                        child: const Icon(
+                          Icons.play_arrow_rounded,
+                          size: 100,
+                          color: Colors.black45,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
