@@ -8,6 +8,8 @@ class DiscoverProvider extends ChangeNotifier {
   List<VideoPost> videos = [];
 
   Future<void> loadNextPage() async {
+    // await Future.delayed(const Duration(seconds: 1)); //* muestra el CircularProgressIndicator durante 1 segundo
+
     final List<VideoPost> newVideos = videoPosts
         .map((video) => LocalVideoModel.fromJson(video).toVideoPostEntity())
         .toList();

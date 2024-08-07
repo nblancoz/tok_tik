@@ -11,12 +11,14 @@ class VideoButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // if (video.likes != 0) //* si no hay likes muestra el icono
         _CustomIconButton(
           value: video.likes,
           iconColor: Colors.red,
           iconData: Icons.favorite,
         ),
         const SizedBox(height: 20),
+        // if (video.views != 0) //* si no hay views muestra el icono
         _CustomIconButton(
           value: video.views,
           iconData: Icons.remove_red_eye_outlined,
